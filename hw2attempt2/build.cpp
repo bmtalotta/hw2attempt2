@@ -4,63 +4,49 @@
 //10/6/2020
 //for use in cs411 hw 2
 
+//scratch delete me
+
 int build(int w, int e, const vector<Bridge>& bridges)
 {
 	int n = bridges.size();
 	int currentSum = 0;
 	int posProf = 0;
-	vector<Bridge> tempSub;
+	vector<vector<Bridge>> existingSubSets;
 	vector<vector<Bridge>> allGoodSubsets;
-	vector<vector<Bridge>> allSubsets;
+	vector<vector<Bridge>> allSubSets;
 	vector<int> profit = { 0 };
-	for (int i = 0; i < n*n; i++) {
-		int temp = i;
-		posProf = 0;
-		tempSub.clear();
-		for (int j = 0; j < n; j++) {
-			if ((temp & 1)) {
-				posProf += bridges.at(j).at(2);
-				tempSub.push_back(bridges.at(j));
-			}
-			temp >>= 1;
-		}
-		allSubsets.push_back(tempSub);
-		if (checkSubset(tempSub)) {
-			allGoodSubsets.push_back(tempSub);
-			profit.push_back(posProf);
-		}
-			
+	if (bridges.size() == 1) {
+		return bridges.at(0).at(2);
 	}
-	for (auto n : profit) {
-		cout << n << ", ";
+	for (auto curBridge : bridges) {
+		vector<vector<Bridge>> cpyAllSubSets = allSubSets;
+		for (auto &&subSet: existingSubSets) {
+			subSet.push_back(curBridge);
+			allSubSets.push_back(subSet);
+		}			
 	}
-	cout << "\n";
-	//cout << *max_element(profit.begin(), profit.end()) << "\n";
-/*
-	if (allGoodSubsets.size() > 0) {
-		for (int sub = 0; sub < allGoodSubsets.size(); sub++) {
-			for (int k = 0; k < allGoodSubsets.at(sub).size(); k++) {
-				currentSum += allGoodSubsets.at(sub).at(k).at(2);
-			}
-			profit.push_back(currentSum);
-			currentSum = 0;
+	for (int i = 0; i < allSubSets.size(); i++) {
+		if (checkSubset(allSubSets.at(i))) {
+			profit.push_back(subSetProfit(allSubSets.at(i)));
 		}
 	}
-	*/
 	return *max_element(profit.begin(),profit.end());
 }
 bool checkSubset(vector<Bridge> subset)
 {
 	for (int i = 0; i < subset.size(); i++) {
-		for (int j = 0; j < subset.size(); j++) {
-			if (j > i) {
-				if (((subset.at(i).at(0) == subset.at(j).at(0)) || (subset.at(i).at(1) == subset.at(j).at(1))) ||  //two bridges same city
-					((subset.at(i).at(0) > subset.at(j).at(0)) && (subset.at(i).at(1) < subset.at(j).at(1))) ||	//first way bridges can cross
-					((subset.at(i).at(0) < subset.at(j).at(0)) && (subset.at(i).at(1) > subset.at(j).at(1)))) {	//second way bridges can cross
-					return false;
-				}
+		for (int j = i+1; j < subset.size(); j++) {
+			if (((subset.at(i).at(0) == subset.at(j).at(0)) || (subset.at(i).at(1) == subset.at(j).at(1))) ||  //two bridges same city
+				((subset.at(i).at(0) > subset.at(j).at(0)) && (subset.at(i).at(1) < subset.at(j).at(1))) ||	//first way bridges can cross
+				((subset.at(i).at(0) < subset.at(j).at(0)) && (subset.at(i).at(1) > subset.at(j).at(1)))) {	//second way bridges can cross
+				return false;
 			}
 		}
 	}
 	return true;
+}
+
+int subSetProfit(vector<Bridge> subset)
+{
+	return 0;
 }
