@@ -4,27 +4,25 @@
 //10/6/2020
 //for use in cs411 hw 2
 
-//scratch delete me
 
 int build(int w, int e, const vector<Bridge>& bridges)
 {
-	int n = bridges.size();
-	int currentSum = 0;
 	int posProf = 0;
-	vector<vector<Bridge>> existingSubSets;
-	vector<vector<Bridge>> allGoodSubsets;
-	vector<vector<Bridge>> allSubSets;
+	vector<vector<Bridge>> allSubSets{ vector<Bridge>() };
 	vector<int> profit = { 0 };
+
 	if (bridges.size() == 1) {
 		return bridges.at(0).at(2);
 	}
-	for (auto curBridge : bridges) {
+
+	for (const auto curBridge : bridges) {
 		vector<vector<Bridge>> cpyAllSubSets = allSubSets;
-		for (auto &&subSet: existingSubSets) {
+		for (auto &subSet : cpyAllSubSets) {
 			subSet.push_back(curBridge);
 			allSubSets.push_back(subSet);
 		}			
 	}
+
 	for (int i = 0; i < allSubSets.size(); i++) {
 		if (checkSubset(allSubSets.at(i))) {
 			profit.push_back(subSetProfit(allSubSets.at(i)));
@@ -48,5 +46,9 @@ bool checkSubset(vector<Bridge> subset)
 
 int subSetProfit(vector<Bridge> subset)
 {
-	return 0;
+	int profit = 0;
+	for (int i = 0; i < subset.size(); i++) {
+		profit += subset.at(i).at(2);
+	}
+	return profit;
 }

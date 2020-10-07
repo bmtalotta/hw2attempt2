@@ -8,14 +8,8 @@
 #include <vector>
 #include <algorithm>
 using std::vector;
-#include<iostream>//for testing delete later
-using std::cout;//for testing delete later 
 using Bridge = vector<int>;
 int build(int w, int e, const vector<Bridge>& bridges);
 bool checkSubset(vector<Bridge> subset);
 int subSetProfit(vector<Bridge> subset);
-
-
-
-
 #endif "!build_H"
