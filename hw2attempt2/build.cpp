@@ -7,7 +7,6 @@
 
 int build(int w, int e, const vector<Bridge>& bridges)
 {
-	int posProf = 0;
 	vector<vector<Bridge>> allSubSets{ vector<Bridge>() };
 	vector<int> profit = { 0 };
 
@@ -20,13 +19,10 @@ int build(int w, int e, const vector<Bridge>& bridges)
 		for (auto &subSet : cpyAllSubSets) {
 			subSet.push_back(curBridge);
 			allSubSets.push_back(subSet);
+			if (checkSubset(subSet)) {
+				profit.push_back(subSetProfit(subSet));
+			}
 		}			
-	}
-
-	for (int i = 0; i < allSubSets.size(); i++) {
-		if (checkSubset(allSubSets.at(i))) {
-			profit.push_back(subSetProfit(allSubSets.at(i)));
-		}
 	}
 	return *max_element(profit.begin(),profit.end());
 }
