@@ -10,10 +10,6 @@ int build(int w, int e, const vector<Bridge>& bridges)
 	vector<vector<Bridge>> allSubSets{ vector<Bridge>() };
 	vector<int> profit = { 0 };
 
-	if (bridges.size() == 1) {
-		return bridges.at(0).at(2);
-	}
-
 	for (const auto curBridge : bridges) {
 		vector<vector<Bridge>> cpyAllSubSets = allSubSets;
 		for (auto &subSet : cpyAllSubSets) {
